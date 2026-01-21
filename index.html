@@ -2,9 +2,234 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>My Modded Apps</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --radius: 16px;
+      --transition: .25s ease;
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #0d1117;
+      --card-bg: #161b22;
+      --text: #c9d1d9;
+      --text-dim: #8b949e;
+      --accent: #2f81f7;
+      --border: #30363d;
+      --btn-bg: #21262d;
+    }
+
+    :root[data-theme="light"] {
+      --bg: #f5f7fa;
+      --card-bg: #ffffff;
+      --text: #1f2328;
+      --text-dim: #5f6b7a;
+      --accent: #0969da;
+      --border: #d0d7de;
+      --btn-bg: #eaeef2;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, sans-serif;
+      margin: 0;
+      line-height: 1.6;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 60px;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin: 0 0 10px;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      right: 0;
+      top: 0;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: .9rem;
+    }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    .app-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      transition: transform .2s ease, border-color .2s ease;
+    }
+
+    .app-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent);
+    }
+
+    .app-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .app-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      margin-right: 15px;
+      object-fit: cover;
+    }
+
+    .app-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .app-version {
+      margin-left: auto;
+      font-size: 0.85rem;
+      color: var(--accent);
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: rgba(47,129,247,.1);
+    }
+
+    .app-description {
+      color: var(--text-dim);
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+
+    .btn-github {
+      background: var(--btn-bg);
+      border: 1px solid var(--border);
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text);
+    }
+
+    .btn-github:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    footer {
+      margin-top: 80px;
+      text-align: center;
+      color: var(--text-dim);
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+    }
+
+    @media (max-width: 480px) {
+      .theme-toggle {
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        border-radius: 999px;
+      }
+    }
+  </style>
 </head>
+
 <body>
+
+<div class="container">
+  <header>
+    <h1>Setnex Mods</h1>
+    <button class="theme-toggle" id="themeToggle">Тема</button>
+  </header>
+
+  <div class="app-grid">
+    <div class="app-card">
+      <div class="app-header">
+        <img src="https://play-lh.googleusercontent.com/fCEL_ORrwZjRtJg_KI6AiqXyu1Gg6qsIvQOWNX25c0YFrMQ0Jz93RCNEGFWMctkVUuc1" class="app-icon">
+        <div class="app-title">Kate Mobile Mod</div>
+        <span class="app-version">130.2</span>
+      </div>
+
+      <div class="app-description">
+        Модифицированная версия Kate без рекламы и слежки, с поддержкой офлайн-музыки и обновлений.
+      </div>
+
+      <button class="btn-github" onclick="downloadApk('kate')">Скачать</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>Все модификации предоставляются без гарантий.</p>
+    <a href="https://t.me/setnex_mods" target="_blank">@setnex_mods</a>
+  </footer>
+</div>
+
+<script>
+  const root = document.documentElement;
+  const toggleBtn = document.getElementById("themeToggle");
+
+  function applyTheme(theme) {
+    root.dataset.theme = theme;
+    localStorage.setItem("theme", theme);
+    toggleBtn.textContent = theme === "dark" ? "Тёмная" : "Светлая";
+  }
+
+  function loadTheme() {
+    const saved = localStorage.getItem("theme");
+    applyTheme(saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
+  }
+
+  toggleBtn.onclick = () => {
+    applyTheme(root.dataset.theme === "dark" ? "light" : "dark");
+  };
+
+  loadTheme();
+
+  const apkLinks = {
+    kate: "https://github.com/notstnx/KMOTA/raw/refs/heads/main/Kate.apk"
+  };
+
+  function downloadApk(app) {
+    const url = apkLinks[app];
+    if (!url) return alert("Файл не найден");
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.click();
+  }
+</script>
 
 </body>
 </html>
