@@ -64,16 +64,23 @@
     }
 
     .theme-toggle {
-      position: absolute;
-      right: 0;
-      top: 0;
+      position: fixed;
+      left: 16px;
+      bottom: 16px;
       border: 1px solid var(--border);
       background: var(--card-bg);
-      color: var(--text);
-      border-radius: 10px;
-      padding: 8px 12px;
+      color: var(--text-dim);
+      border-radius: 999px;
+      padding: 8px 10px;
       cursor: pointer;
-      font-size: .9rem;
+      font-size: .85rem;
+      opacity: .6;
+      transition: opacity .2s ease, background .2s ease, color .2s ease;
+    }
+
+    .theme-toggle:hover {
+      opacity: 1;
+      color: var(--text);
     }
 
     .app-grid {
@@ -154,15 +161,6 @@
       border-top: 1px solid var(--border);
       padding-top: 20px;
     }
-
-    @media (max-width: 480px) {
-      .theme-toggle {
-        position: fixed;
-        right: 16px;
-        bottom: 16px;
-        border-radius: 999px;
-      }
-    }
   </style>
 </head>
 
@@ -171,7 +169,6 @@
 <div class="container">
   <header>
     <h1>Setnex Mods</h1>
-    <button class="theme-toggle" id="themeToggle">Тема</button>
   </header>
 
   <div class="app-grid">
@@ -192,9 +189,11 @@
 
   <footer>
     <p>Все модификации предоставляются без гарантий.</p>
-    <a href="https://t.me/setnex_mods" target="_blank">@setnex_mods</a>
+    <a href="https://t.me/setnex_mods" target="_blank">Telegram: @setnex_mods</a>
   </footer>
 </div>
+
+<button class="theme-toggle" id="themeToggle">Тема</button>
 
 <script>
   const root = document.documentElement;
@@ -203,7 +202,7 @@
   function applyTheme(theme) {
     root.dataset.theme = theme;
     localStorage.setItem("theme", theme);
-    toggleBtn.textContent = theme === "dark" ? "Тёмная" : "Светлая";
+    toggleBtn.textContent = theme === "dark" ? "🌙" : "☀️";
   }
 
   function loadTheme() {
@@ -218,7 +217,7 @@
   loadTheme();
 
   const apkLinks = {
-    kate: "https://github.com/notstnx/KMOTA/raw/refs/heads/main/Kate.apk"
+    kate: "https://github.com/yourrepo/Kate.apk"
   };
 
   function downloadApk(app) {
